@@ -14,10 +14,10 @@ public class HumanLoader extends ClassLoader {
 
     @Override
     public Class<?> loadClass(String name) throws ClassNotFoundException {
-        if (name.equals("ru.innopolis.stc12.classloaders2.EuropeanHuman")) {
+        if (name.equals(HumanInvoker.CLASS_NAME_FOR_CHECK)) {
             byte[] classData = null;
             try {
-                classData = getClassDataInBytes();
+                classData = getClassDataInBytes(new URL(HumanInvoker.CLASS_NAME_FOR_LOAD));
             } catch (IOException e) {
                 System.err.println(e.getMessage()); // make IDE happy
             }
@@ -27,9 +27,7 @@ public class HumanLoader extends ClassLoader {
         return super.loadClass(name);
     }
 
-    private byte[] getClassDataInBytes() throws IOException {
-        // fix path for build (file must exists)
-        URL url = new URL("file:/tmp/EuropeanHuman.class");
+    private byte[] getClassDataInBytes(URL url) throws IOException {
         InputStream inputStream = url.openConnection().getInputStream();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
